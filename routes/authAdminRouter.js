@@ -5,9 +5,9 @@ const jwt = require("jsonwebtoken");
 const Admin = require("../models/admin")
 
 // register an Admin
-router.post("/admin/register", async (req, res) => {
+router.post("/register", async (req, res) => {
 
-    const { user, password, confirmpassword } = req.body;
+    const { name, user, password, confirmpassword } = req.body;
 
     // check for required fields
     if(user == null || password == null) {
@@ -31,6 +31,7 @@ router.post("/admin/register", async (req, res) => {
 
     // creating the admin object
     const objectAdmin = new Admin({
+        name: name,
         user: user,
         password: passwordHash,
     });
@@ -59,7 +60,7 @@ router.post("/admin/register", async (req, res) => {
 });
 
 // Login Admin
-router.post("/admin/login", async (req, res) => {
+router.post("/login", async (req, res) => {
     const { user, password } = req.body;
 
     // check if admin exists

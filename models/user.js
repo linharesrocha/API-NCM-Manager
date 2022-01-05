@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
-// Criando o Shema
-const AdminSchema = new mongoose.Schema({
+// Criadno Schema
+const UserSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
@@ -16,7 +16,7 @@ const AdminSchema = new mongoose.Schema({
     }
 });
 
-// Criando o Modelo Admin
-const Admin = mongoose.model('Admin', AdminSchema);
+// Criando o Modelo User
+const User = mongoose.model("User", UserSchema);
 
-module.exports = Admin;
+module.exports = User;

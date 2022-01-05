@@ -10,6 +10,10 @@ const NcmSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    origem: {
+        type: Number,
+        required: true
+    },
     adminId: {
         type: mongoose.ObjectId
     }
