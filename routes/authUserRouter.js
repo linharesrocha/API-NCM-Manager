@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 const User = require("../models/user");
@@ -9,7 +10,7 @@ router.post("/login", async (req, res) => {
 
     //check if user exists
     const userObject = await User.findOne({ user: user });
-    if(!useuserObjectr) {
+    if(!userObject) {
         return res.status(400).json({ err: "Usuário não encontrado no sistema!"})
     }
 
@@ -24,7 +25,8 @@ router.post("/login", async (req, res) => {
         // payload
         {
             user: userObject.name,
-            id: userObject._id
+            id: userObject._id,
+            admin: false
         },
         // secret
         "linux"

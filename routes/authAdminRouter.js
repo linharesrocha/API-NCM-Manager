@@ -45,7 +45,8 @@ router.post("/register", async (req, res) => {
             // payload
             {
                 user: newAdmin.user,
-                id: newAdmin._id
+                id: newAdmin._id,
+                admin: true
             },
             // secret
             "linux"
@@ -80,7 +81,8 @@ router.post("/login", async (req, res) => {
         //payload
         {
             user: admin.user,
-            id: admin._id
+            id: admin._id,
+            admin: true
         },
         //secret
         "linux"

@@ -31,7 +31,7 @@ router.post("/create-user", checkToken, async (req, res) => {
     const objectUser = new User({
         name: name,
         user: user,
-        password: passwordHash
+        password: passwordHash,
     });
 
     // saving to the database
@@ -42,6 +42,10 @@ router.post("/create-user", checkToken, async (req, res) => {
     }catch(err) {
         res.json({ error: true, msg: "Não foi possível realizar o cadastro do usuário!", error: err})   
     }
+});
+
+router.post("/create-product", checkToken, async (req, res) => {
+    
 });
 
 module.exports = router;
