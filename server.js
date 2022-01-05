@@ -9,6 +9,12 @@ const authUserRouter = require('./routes/authUserRouter');
 const adminRouter = require('./routes/adminRouter');
 
 
+// ejs
+app.set("view engine", "ejs");
+
+//static
+app.use(express.static("public"));
+
 // config 
 const port = 8080;
 const app = express();
