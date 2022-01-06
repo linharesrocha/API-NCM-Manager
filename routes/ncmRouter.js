@@ -1,9 +1,9 @@
 const router = require("express").Router();
-const checkToken = require("../helpers/check-token-admin");
+const checkTokenAdmin = require("../helpers/check-token-admin");
 const getAdminByToken = require("../helpers/get-admin-by-token");
 const NCM = require("../models/ncm");
 
-router.get("/get-all", checkToken, async (req, res) => {
+router.get("/", checkTokenAdmin, async (req, res) => {
 
     try{
         const ncms = await NCM.find().sort([[ '_id', -1 ]]);
@@ -12,9 +12,23 @@ router.get("/get-all", checkToken, async (req, res) => {
     catch(err) {
         return res.status(400).json({ error: "Não foi possível retornar os NCM's!"});
     }
-})
+});
 
-router.post("/create-product", checkToken, async (req, res) => {
+router.get("/:id", checkTokenAdmin, async (req, res) => {
+
+    const { id } = req.params;
+
+    try {
+        const ncm = await NCM.findOne({ _id: id })
+        return res.status(200).json({ error: null, msg: "Produto encontrado com sucesso!", data: ncm});
+    }
+    catch(err) {
+        return res.status(400).json({error: "Não foi possível encontrar o produto."})
+    }
+
+});
+
+router.post("/create-product", checkTokenAdmin, async (req, res) => {
     
     const token = req.header("auth-token");
     const user = await getAdminByToken(token);
@@ -44,10 +58,9 @@ router.post("/create-product", checkToken, async (req, res) => {
 
 });
 
-router.post("/delete-product", checkToken, async (req, res) => {
+router.post("/delete-product", checkTokenAdmin, async (req, res) => {
      
-    const token = req.header("auth-token");
-    const user = await getAdminByToken(token);
+    const userPayload = req.admin;
     
     // id ncm
     const { id } = req.body;
@@ -57,7 +70,7 @@ router.post("/delete-product", checkToken, async (req, res) => {
 
     try {
         await NCM.deleteOne({ _id: id });
-        res.json({error: null, msg: "NCM removido com sucesso!", DeletedBy: user});
+        res.json({error: null, msg: "NCM removido com sucesso!", DeletedBy: userPayload});
     }
     catch(err) {
         res.status(400).json({err: "Acesso negado, não foi possível remover o NCM!"})
@@ -65,7 +78,7 @@ router.post("/delete-product", checkToken, async (req, res) => {
 
 });
 
-router.put("/update-product", checkToken, async (req, res) => {
+router.put("/update-product", checkTokenAdmin, async (req, res) => {
 
     const { id, name, code, origem } = req.body;
     const token = req.header("auth-token");
