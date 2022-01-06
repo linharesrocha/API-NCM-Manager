@@ -14,11 +14,12 @@ const NcmSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    CreatedBy: {
-        type: mongoose.ObjectId
+    createdby: {
+        type: mongoose.ObjectId,
+        required: true
     },
-    UpdatedBy: {
-        type: mongoose.ObjectId
+    updatedby: {
+        type: mongoose.ObjectId,
     }
     
 });

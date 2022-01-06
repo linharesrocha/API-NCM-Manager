@@ -10,14 +10,14 @@ const checkToken = (req, res, next) => {
 
     // create jwt
     try{
-        const verified = jwt.verify(token, "linux");
+        const payload = jwt.verify(token, "linux");
 
         // verify if user is an admin
-        if(verified.admin == false) {
+        if(payload.admin == false) {
             return res.status(400).json({err: "Você não tem permissão!"})
         }
         
-        req.user = verified;
+        req.admin = payload;
         next()
 
     }catch(err) {

@@ -18,7 +18,7 @@ router.post("/create-product", checkToken, async (req, res) => {
     
     const token = req.header("auth-token");
     const user = await getAdminByToken(token);
-
+    const userPayload = req.admin
     const { name, code, origem } = req.body;
 
     // validations
@@ -30,12 +30,13 @@ router.post("/create-product", checkToken, async (req, res) => {
         name: name,
         code: code,
         origem: origem,
-        adminId: user._id.toString()
+        createdby: user._id.toString(),
+        //updatedby: user._id.toString()
     });
 
     try {
         const ncm = await ncmObject.save();
-        res.status(200).json({ error: null, msg: "Produto criado com sucesso!", Product: ncm, createdBy: user})
+        res.status(200).json({ error: null, msg: "Produto criado com sucesso!", Product: ncm, createdBy: userPayload})
 
     }catch(err) {
         res.status(400).json({ error: "Não foi possível criar o produto!"})
@@ -69,6 +70,7 @@ router.put("/update-product", checkToken, async (req, res) => {
     const { id, name, code, origem } = req.body;
     const token = req.header("auth-token");
     const user = await getAdminByToken(token);
+    const userPayload = req.admin
 
     // validations
     if(name == "null" || code == "null" || origem == "null") {
@@ -80,13 +82,13 @@ router.put("/update-product", checkToken, async (req, res) => {
         name: name,
         code: code,
         origem: origem,
-        updatedBy: user._id.toString()
+        updatedby: user._id.toString(),
     }
 
     try {
         // returns updated data
         const updatedNCM = await NCM.findOneAndUpdate({ _id: id}, {$set: ncmObject}, {new: true});
-        res.status(200).json({ error: null, msg: "Produto atualizado com sucesso!", updatedNCM: updatedNCM});
+        res.status(200).json({ error: null, msg: "Produto atualizado com sucesso!", updatedBy: userPayload});
     }
     catch(err) {
         res.status(400).json({error: "Não foi possível atualizar o produto!"})
