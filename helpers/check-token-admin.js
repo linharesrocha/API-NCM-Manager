@@ -8,6 +8,7 @@ const checkToken = (req, res, next) => {
         return res.status(401).json({ error: "Acesso negado! Usuário sem token."});
     }
 
+    // create jwt
     try{
         const verified = jwt.verify(token, "linux");
 

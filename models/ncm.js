@@ -14,9 +14,13 @@ const NcmSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    adminId: {
+    CreatedBy: {
+        type: mongoose.ObjectId
+    },
+    UpdatedBy: {
         type: mongoose.ObjectId
     }
+    
 });
 
 // Criando o Modelo NCM
