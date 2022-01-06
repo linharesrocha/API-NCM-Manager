@@ -7,13 +7,7 @@ const connection = require('./db/connection');
 const authAdminRouter = require('./routes/authAdminRouter');
 const authUserRouter = require('./routes/authUserRouter');
 const adminRouter = require('./routes/adminRouter');
-
-
-// ejs
-app.set("view engine", "ejs");
-
-//static
-app.use(express.static("public"));
+const ncmRouter = require('./routes/ncmRouter');
 
 // config 
 const port = 8080;
@@ -25,12 +19,9 @@ app.use(express.json());
 app.use("/api/v1/auth/admin", authAdminRouter);
 app.use("/api/v1/auth/user", authUserRouter)
 app.use("/api/v1/admin", adminRouter);
+app.use("/api/v1/ncm", ncmRouter);
 
 // listen
 app.listen(port, () => {
     console.log(`O back-end está rodando na porta ${port}`);
 });
-
-
-
-

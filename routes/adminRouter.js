@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const bcrypt = require("bcrypt");
 const checkToken = require("../helpers/check-token-admin");
-const getAdminByToken = require("../helpers/get-admin-by-token");
 
 const User = require("../models/user");
 const NCM = require("../models/ncm");
@@ -43,35 +42,6 @@ router.post("/create-user", checkToken, async (req, res) => {
     }catch(err) {
         res.json({ error: true, msg: "Não foi possível realizar o cadastro do usuário!", error: err})   
     }
-});
-
-router.post("/create-product", checkToken, async (req, res) => {
-    
-    const token = req.header("auth-token");
-    const user = await getAdminByToken(token);
-
-    const { name, code, origem } = req.body;
-
-    // validations
-    if(name == null || code == null || origem == null) {
-        return res.status(400).json({ error: "Os campos não podem ficar vazios!" })
-    }
-
-    const ncmObject = new NCM({
-        name: name,
-        code: code,
-        origem: origem,
-        adminId: user._id.toString()
-    });
-
-    try {
-        const ncm = await ncmObject.save();
-        res.status(200).json({ error: null, msg: "Produto criado com sucesso!", product: ncm})
-
-    }catch(err) {
-        res.status(400).json({ error: "Não foi possível criar o produto!"})
-    }
-
 });
 
 module.exports = router;
